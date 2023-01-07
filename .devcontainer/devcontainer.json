@@ -6,16 +6,23 @@
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.10",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
-	}
+	},
+    "extensions": [
+        "ms-python.python", 
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter", 
+		"vscodevim.vim"
+    ],
+	"settings": {
+        "python.defaultInterpreterPath": "/home/vscode/.cache/pypoetry/virtualenvs/touchoku-g9me8CBz-py.3.10"
+    },
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "poetry install"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
