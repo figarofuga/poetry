@@ -10,10 +10,12 @@ dfl.head()
 
 # %%
 df_an = (dfl.rename({'2022/04/01 (金)\n平日夜間': 'date', 
-                    '平日夜間': 'type_date'}).
-         select([pl.col("date").str.extract("(.*)(\\()", 1).str.strptime(pl.Date, fmt='%Y/%m/%d '), 
+                    '平日夜間': 'type_date'})
+         .select([pl.col("date").str.extract("(.*)(\\()", 1).str.strptime(pl.Date, fmt='%Y/%m/%d '), 
                  pl.col("type_date"),
-                 pl.col(pl.Float64).map(np.floor)]))
+                 pl.col(pl.Float64).map(np.floor)])
+         .with_column(pl.when(pl.col("type_date") == "平日夜間").then("weekday").when(pl.col("type_date") == "休日午前").then("weekend_am").otherwise("weekend_night").alias("type_date"))
+         )
 
 
 # %%
