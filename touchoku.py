@@ -26,4 +26,28 @@ import pulp
 
 
 # %%
+# 問題の定義
+problem = pulp.LpProblem(name="Diet", sense=pulp.LpMinimize)
 
+# 変数の定義
+A = pulp.LpVariable(name = "A", lowBound = 0, cat="Integer")
+B = pulp.LpVariable(name = "B", lowBound = 0, cat="Integer")
+C = pulp.LpVariable(name = "C", lowBound = 0, cat="Integer")
+
+# 目的関数
+problem += 20*A + 12*B + 18*C
+
+# 制約条件の定義
+problem += 22*A + 13*B + 17*C >= 200
+problem += 20*A + 30*B + 5*C >= 200
+problem += 10*A + 5*B + 12*C >= 100
+
+# 解く
+status = problem.solve()
+print(pulp.LpStatus[status])
+
+# 結果表示
+print("Result")
+print("A:", A.value())
+print("B:", B.value())
+print("C:", C.value())
