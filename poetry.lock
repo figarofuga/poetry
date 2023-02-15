@@ -2493,19 +2493,7 @@ files = [
     {file = "widgetsnbextension-4.0.5.tar.gz", hash = "sha256:003f716d930d385be3fd9de42dd9bf008e30053f73bddde235d14fbeaeff19af"},
 ]
 
-[[package]]
-name = "xlsx2csv"
-version = "0.8.1"
-description = "xlsx to csv converter"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "xlsx2csv-0.8.1-py3-none-any.whl", hash = "sha256:6c36c0295d64f231570479e514d6163ce135af3c431a1705b073230bedaef9f2"},
-    {file = "xlsx2csv-0.8.1.tar.gz", hash = "sha256:7ecd6d2bc2426f2e432f4fdac12211e1976d3cbb65f9033e1eda65edda2045e3"},
-]
-
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "0e47dae4f1214356a7562b908fb090febef5b3878ed79bbc346f586e43c8b64d"
+content-hash = "3217b2a6b0ad46ea5c9bc1bf8ce7c1112eb9a148bdf91472cbeba82053410151"

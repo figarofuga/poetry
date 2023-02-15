@@ -4,8 +4,8 @@ import pandas as pd
 import polars as pl
 
 # %%
-dfl = pl.read_excel(df)
-
+df = pd.read_excel("to_niimi.xlsx")
+dfl = pl.DataFrame(df)
 # %%
 df_null = dfl[:, [(s.null_count() == dfl.height) for s in dfl]]
 
