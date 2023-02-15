@@ -17,7 +17,7 @@ df_an = (dfl[:, [not (s.null_count() == dfl.height) for s in dfl]]
                  pl.col(pl.Float64).map(np.floor)])
          .with_column(
                  pl.when(pl.col("type_date") == "平日夜間").then("weekday").when(pl.col("type_date") == "休日午前").then("weekend_am").otherwise("weekend_night").alias("type_date"))
-         .with_row_count())
+         .with_row_count(name="row_num"))
 
 # %% 
 weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
@@ -26,11 +26,8 @@ weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
 # The range of numbers are -1 to 2
 # %%
 import pulp
-
-
-# %%
 # 問題の定義
-problem = pulp.LpProblem(name="Diet", sense=pulp.LpMinimize)
+problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
 
 # 変数の定義
 A = pulp.LpVariable(name = "A", lowBound = 0, cat="Integer")
