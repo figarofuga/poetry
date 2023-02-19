@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import polars as pl
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # %%
 df = pd.read_excel("to_niimi.xlsx")
@@ -14,16 +15,23 @@ df_an = (dfl.rename({'2022/04/01 (金)\n平日夜間': 'date',
                 '平日夜間': 'type_date'})
        .with_columns(
                [pl.col(pl.Float32).map(np.floor).keep_name(),
-               pl.col("date").str.extract("(.*)(\\()", 1).str.strptime(pl.Date, fmt='%Y/%m/%d '), 
-               pl.when(pl.col("type_date") == "平日夜間").then("weekday").when(pl.col("type_date") == "休日午前").then("weekend_am").otherwise("weekend_night").alias("type_date")
-               ]).with_row_count(name="row_num"))
+               pl.col("date").str.extract("(.*)(\\()", 1).str.strip().alias("date_char")])
+       .with_columns([ 
+               pl.col("date_char").str.strptime(pl.Date, fmt='%Y/%m/%d ').alias("date"), 
+               pl.when(pl.col("type_date") == "平日夜間").then("weekday").when(pl.col("type_date") == "休日午前").then("weekend_am").otherwise("weekend_night").alias("type_date"), 
+               pl.when(pl.col("type_date") == "休日午後").then(pl.col("date_char")+"_pm").when(pl.col("type_date") == "休日午前").then(pl.col("date_char")+"_am").otherwise(pl.col("date_char")).str.strip().alias("date_list")
+               ])
+               .with_row_count(name="row_num"))
          
 # %%
 # define duration
 
+start = datetime(2022, 5, 1)
+
+stop = start + relativedelta(months=1)
+
 ranged_df = (df_an.filter(
-    pl.col("date").is_between(datetime(2022, 5, 1),
-                datetime(2022, 5, 31)),
+    pl.col("date").is_between(start,stop),
 ))
 
 df_all_null = ranged_df[:, [(s.null_count() == ranged_df.height) for s in ranged_df]]
@@ -39,9 +47,11 @@ weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
 
 person = df_any_val.select(pl.col(pl.Float32)).columns
 
+days = df_any_val.get_column("date_list").to_list()
+
+
 # %% [Markdown]
 # The range of numbers are -1 to 2
-# %%
 import pulp
 # 問題の定義
 problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
@@ -51,6 +61,11 @@ problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
 # Doctors at -1 should be avoided
 # Each workers load should be equal
 
+x = {}
+for p in person:
+    for d in days:
+            x[p, d] = df_any_val.filter(pl.col("date_list")==d).select(pl.col(p))
+# %%
 # 変数の定義
 A = pulp.LpVariable(name = "A", lowBound = 0, cat="Integer")
 B = pulp.LpVariable(name = "B", lowBound = 0, cat="Integer")
@@ -73,3 +88,5 @@ print("Result")
 print("A:", A.value())
 print("B:", B.value())
 print("C:", C.value())
+
+# %%
