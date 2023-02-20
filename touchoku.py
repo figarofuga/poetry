@@ -47,7 +47,7 @@ weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
 
 person = df_any_val.select(pl.col(pl.Float32)).columns
 
-days = df_any_val.get_column("date_list").to_list()
+days = df_any_val.get_column("row_num").to_list()
 
 
 # %% [Markdown]
@@ -55,6 +55,11 @@ days = df_any_val.get_column("date_list").to_list()
 import pulp
 # 問題の定義
 problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
+
+# %%
+
+# tmp = {p:row for p in person for row in days if df_any_val[p,5] == -1}
+
 
 # %% [Markdown]
 # sequential work should be avoided
@@ -64,7 +69,7 @@ problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
 x = {}
 for p in person:
     for d in days:
-            x[p, d] = df_any_val.filter(pl.col("date_list")==d).select(pl.col(p))
+            x[p, d] = df_any_val.filter(pl.col("row_num")==d).select(pl.col(p))
 # %%
 # 変数の定義
 A = pulp.LpVariable(name = "A", lowBound = 0, cat="Integer")
