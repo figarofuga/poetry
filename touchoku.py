@@ -4,6 +4,8 @@ import pandas as pd
 import polars as pl
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import itertools
+import pprint
 
 # %%
 df = pd.read_excel("to_niimi.xlsx")
@@ -49,6 +51,12 @@ person = df_any_val.select(pl.col(pl.Float32)).columns
 
 days = df_any_val.get_column("row_num").to_list()
 
+all_comb = list(itertools.product(person, days))
+
+# for v in all_comb: 
+        # print(v)
+
+# holiday = (p, d)
 
 # %% [Markdown]
 # The range of numbers are -1 to 2
