@@ -43,8 +43,16 @@ df_any_null = ranged_df[:, [s.null_count() > 0 for s in ranged_df]]
 df_full = ranged_df[:, [s.null_count() == 0 for s in ranged_df]]
 
 df_any_val = ranged_df[:, [not s.null_count() == ranged_df.height for s in ranged_df]]
+# %%
+
+def get_tuple(colname): 
+        mini_dat = (df_any_val.select(["row_num", colname]).filter(pl.col(colname) == -1.0))
+        row_list = [(mini_dat[i, "row_num"], mini_dat[i, colname]) for i in range(len(mini_dat))]
+        return row_list
+        
 
 # %% 
+
 weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
 
 person = df_any_val.select(pl.col(pl.Float32)).columns
