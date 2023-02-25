@@ -47,7 +47,7 @@ df_any_val = ranged_df[:, [not s.null_count() == ranged_df.height for s in range
 
 def get_tuple(colname): 
         mini_dat = (df_any_val.select(["row_num", colname]).filter(pl.col(colname) == -1.0))
-        row_list = [(mini_dat[i, "row_num"], mini_dat[i, colname]) for i in range(len(mini_dat))]
+        row_list = [(colname, mini_dat[i, "row_num"]) for i in range(len(mini_dat))]
         return row_list
         
 
@@ -60,6 +60,8 @@ person = df_any_val.select(pl.col(pl.Float32)).columns
 days = df_any_val.get_column("row_num").to_list()
 
 all_comb = list(itertools.product(person, days))
+
+holidays = map(get_tuple, person)
 
 # for v in all_comb: 
         # print(v)
