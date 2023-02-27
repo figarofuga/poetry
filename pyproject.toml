@@ -18,6 +18,7 @@ jupyter = "^1.0.0"
 polars = "^0.15.14"
 pyarrow = "^10.0.1"
 jpholiday = "^0.1.8"
+pendulum = "^2.1.2"
 
 
 [build-system]
