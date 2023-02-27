@@ -9,6 +9,12 @@ import pprint
 import jpholiday
 
 # %%
+# tmp_df = (pd.DataFrame(pd.date_range(start="2023-02-01", end="2024-03-31"), columns=["date"])
+#           .assign(person1 = np.nan, 
+#                   person2 = np.nan))
+
+# tmp_df.to_csv("hosp_shift2.csv", index=False)
+
 hosp_shift = pl.read_csv("hosp_shift.csv")
 
 # %%
