@@ -9,8 +9,8 @@ import pprint
 import jpholiday
 
 # %%
+hosp_shift = pl.read_csv("hosp_shift.csv")
 
-               
 # %%
 df = pd.read_excel("to_niimi.xlsx")
 dfl = pl.DataFrame(df).select(pl.all().shrink_dtype())
