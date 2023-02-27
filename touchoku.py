@@ -8,6 +8,32 @@ import itertools
 import pprint
 
 # %%
+
+hosp_tochok = [("尾田", "2023-2-1"), 
+               ("宮坂", "2023-2-3"), 
+               ("宗", "2023-2-4"), 
+               ("竹藤", "2023-2-5"), 
+               ("新美", "2023-2-6"),
+               ("林智", "2023-2-6"), 
+               ("菊野", "2023-2-7"), 
+               ("佐藤", "2023-2-7"), 
+               ("林哲", "2023-2-11"),
+               ("伊藤", "2023-2-12"),
+               ("新美", "2023-2-13"), 
+               ("井上", "2023-2-14"), 
+               ("宮坂", "2023-2-17"), 
+               ("吉田", "2023-2-18"), 
+               ("尾田", "2023-2-21"), 
+               ("中瀬", "2023-2-21"), 
+               ("山口", "2023-2-22"), 
+               ("佐藤", "2023-2-24"), 
+               ("勝俣", "2023-2-24"), 
+               ("福井", "2023-2-26"), 
+               ("太良", "2023-2-26"), 
+               ("井上", "2023-2-28")
+               ]
+
+# %%
 df = pd.read_excel("to_niimi.xlsx")
 dfl = pl.DataFrame(df).select(pl.all().shrink_dtype())
 
@@ -61,7 +87,7 @@ days = df_any_val.get_column("row_num").to_list()
 
 all_comb = list(itertools.product(person, days))
 
-holidays = map(get_tuple, person)
+holidays = list(itertools.chain.from_iterable(list(map(get_tuple, person))))
 
 # for v in all_comb: 
         # print(v)
