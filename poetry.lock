@@ -728,6 +728,18 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "jpholiday"
+version = "0.1.8"
+description = "Pure-Python Japan Public Holiday Generate"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "jpholiday-0.1.8-py3-none-any.whl", hash = "sha256:5a2d5e680ea1cc43419882451c95d4c9ab9616127a02670fa03b98b597d88f9a"},
+    {file = "jpholiday-0.1.8.tar.gz", hash = "sha256:385b5877aa8a38bc0818a6eec42ad943b089e3d8969307b9ee27a443f2428438"},
+]
+
+[[package]]
 name = "jsonpointer"
 version = "2.3"
 description = "Identify specific nodes in a JSON document (RFC 6901)"
@@ -2496,4 +2508,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3217b2a6b0ad46ea5c9bc1bf8ce7c1112eb9a148bdf91472cbeba82053410151"
+content-hash = "2db5102ecf561edd1c35b8077c4f57409b4cb4fbb7c2991e96b1d2b06e146e74"
