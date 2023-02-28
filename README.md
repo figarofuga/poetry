@@ -1,12 +1,13 @@
 # The purpose of this repositry
 このレジストリは総合内科のオンコール表作成のためのレポジトリです。
-git管理しています。混乱した時のgit pull --force的な呪文は以下の通りです  \n
+git管理しています。混乱した時のgit pull --force的な呪文は以下の通りです 
 
 
-git fetch origin main  \n 
+git fetch origin main  
+
 git reset --hard origin/main
 
-  \n
+
   
 # How to decide shift?
 
