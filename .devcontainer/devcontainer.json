@@ -5,13 +5,14 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.10",
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}, 
+		"ghcr.io/devcontainers-contrib/features/neovim-apt-get:1": {}
 	},
     "extensions": [
         "ms-python.python", 
 		"ms-python.vscode-pylance",
 		"ms-toolsai.jupyter", 
-		"vscodevim.vim"
+		"asvetliakov/vscode-neovim"
     ],
 	"settings": {
         "python.defaultInterpreterPath": "/home/vscode/.cache/pypoetry/virtualenvs/touchoku-g9me8CBz-py.3.10"
