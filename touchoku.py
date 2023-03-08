@@ -15,7 +15,7 @@ import jpholiday
 
 # tmp_df.to_csv("hosp_shift2.csv", index=False)
 
-tmp_dat = pd.read_excel("oncall_shift.xlsx")
+# tmp_dat = pd.read_excel("oncall_shift.xlsx", sheet_name='統計①', index_col=0)
 
 hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
               .assign(is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
