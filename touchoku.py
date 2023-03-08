@@ -15,8 +15,8 @@ import jpholiday
 
 # tmp_df.to_csv("hosp_shift2.csv", index=False)
 
-hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
-              .assign(is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
+hosp_shift = pl.read_csv("hosp_shift.csv")
+
                       is_weekend = lambda dat:dat['date'].dt.day_name().isin(['Saturday', 'Sunday']).astype(int))
               .assign(is_holiday = lambda dat: np.where(dat['is_specialholiday'] + dat['is_weekend'] == 0, 0, 1))
 
