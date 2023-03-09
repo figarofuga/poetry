@@ -7,6 +7,11 @@ from dateutil.relativedelta import relativedelta
 import itertools
 import pprint
 import jpholiday
+# %%
+# define values 
+start = datetime(2022, 5, 1)
+stop = start + relativedelta(months=1)
+
 
 # %%
 # tmp_df = (pd.DataFrame(pd.date_range(start="2023-02-01", end="2024-03-31"), columns=["date"])
@@ -15,7 +20,15 @@ import jpholiday
 
 # tmp_df.to_csv("hosp_shift2.csv", index=False)
 
-# tmp_dat = pd.read_excel("oncall_shift.xlsx", sheet_name='統計①', index_col=0)
+record_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='統計①', index_col=0)
+
+
+record_shift2 = pd.read_excel("oncall_shift.xlsx", sheet_name='統計②', index_col=0)
+
+zantei_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='暫定シフト表', index_col=0)
+
+form_answer = pd.read_excel("oncall_shift.xlsx", sheet_name='フォーム回答', index_col=0)
+
 
 hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
               .assign(is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
@@ -46,10 +59,6 @@ df_an = (dfl.rename({'2022/04/01 (金)\n平日夜間': 'date',
 # %%
 # define duration
 
-start = datetime(2022, 5, 1)
-
-stop = start + relativedelta(months=1)
-
 ranged_df = (df_an.filter(
     pl.col("date").is_between(start,stop),
 ))
@@ -70,64 +79,3 @@ def get_tuple(colname):
         
 
 # %% 
-
-weights = {"weekday": 1, "weekend_am": 1, "weekend_night": 2}
-
-person = df_any_val.select(pl.col(pl.Float32)).columns
-
-days = df_any_val.get_column("row_num").to_list()
-
-all_comb = list(itertools.product(person, days))
-
-holidays = list(itertools.chain.from_iterable(list(map(get_tuple, person))))
-
-# for v in all_comb: 
-        # print(v)
-
-# holiday = (p, d)
-
-# %% [Markdown]
-# The range of numbers are -1 to 2
-import pulp
-# 問題の定義
-problem = pulp.LpProblem(name="Tochoku", sense=pulp.LpMinimize)
-
-# %%
-
-# tmp = {p:row for p in person for row in days if df_any_val[p,5] == -1}
-
-
-# %% [Markdown]
-# sequential work should be avoided
-# Doctors at -1 should be avoided
-# Each workers load should be equal
-
-x = {}
-for p in person:
-    for d in days:
-            x[p, d] = df_any_val.filter(pl.col("row_num")==d).select(pl.col(p))
-# %%
-# 変数の定義
-A = pulp.LpVariable(name = "A", lowBound = 0, cat="Integer")
-B = pulp.LpVariable(name = "B", lowBound = 0, cat="Integer")
-C = pulp.LpVariable(name = "C", lowBound = 0, cat="Integer")
-
-# 目的関数
-problem += 20*A + 12*B + 18*C
-
-# 制約条件の定義
-problem += 22*A + 13*B + 17*C >= 200
-problem += 20*A + 30*B + 5*C >= 200
-problem += 10*A + 5*B + 12*C >= 100
-
-# 解く
-status = problem.solve()
-print(pulp.LpStatus[status])
-
-# 結果表示
-print("Result")
-print("A:", A.value())
-print("B:", B.value())
-print("C:", C.value())
-
-# %%
