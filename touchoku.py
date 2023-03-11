@@ -20,15 +20,16 @@ stop = start + relativedelta(months=1)
 
 # tmp_df.to_csv("hosp_shift2.csv", index=False)
 
-record_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='統計①', index_col=0)
+oncall_member = pd.read_excel("oncall_shift.xlsx", sheet_name='オンコール名簿', index_col=None).loc[:, '名前'].to_list()
+
+record_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='統計①', index_col=None)
 
 
-record_shift2 = pd.read_excel("oncall_shift.xlsx", sheet_name='統計②', index_col=0)
+record_shift2 = pd.read_excel("oncall_shift.xlsx", sheet_name='統計②', index_col=None)
 
-zantei_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='暫定シフト表', index_col=0)
+zantei_shift = pd.read_excel("oncall_shift.xlsx", sheet_name='暫定シフト表', index_col=None)
 
-form_answer = pd.read_excel("oncall_shift.xlsx", sheet_name='フォーム回答', index_col=0)
-
+form_answer = pd.read_excel("oncall_shift.xlsx", sheet_name='フォーム回答', index_col=None, header=None)
 
 hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
               .assign(is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
