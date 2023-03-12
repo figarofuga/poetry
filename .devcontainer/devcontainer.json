@@ -18,6 +18,7 @@
 	"settings": {
         "python.defaultInterpreterPath": "/home/vscode/.cache/pypoetry/virtualenvs/touchoku-g9me8CBz-py.3.10"
     },
+	"shutdownAction": "stopContainer",
 
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
