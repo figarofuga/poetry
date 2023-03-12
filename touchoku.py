@@ -46,6 +46,7 @@ form_answer_mod = (pl.DataFrame(form_answer)
                    .select(['name', 'date', 'date_type', 'value'])
                    .with_columns([pl.col('date').str.extract('(.*)(\\()', 1).str.strip().str.strptime(pl.Date,fmt='%Y/%m/%d ').alias("date_char")]))
 
+# %%
 
 df_an = (dfl.rename({'2022/04/01 (金)\n平日夜間': 'date',
                 '平日夜間': 'type_date'})
