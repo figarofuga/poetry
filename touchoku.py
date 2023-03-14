@@ -44,7 +44,9 @@ hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
 form_answer_mod = (pl.DataFrame(form_answer)
                    .rename({'0': 'input_time', '1': 'name', '2': 'date', '3': 'date_type', '4': 'value'})
                    .select(['name', 'date', 'date_type', 'value'])
-                   .with_columns([pl.col('date').str.extract('(.*)(\\()', 1).str.strip().str.strptime(pl.Date,fmt='%Y/%m/%d ').alias("date_char")]))
+                   .with_columns([pl.col('date').str.extract('(.*)(\\()', 1).str.strip().str.strptime(pl.Date,fmt='%Y/%m/%d ').alias("date_char")])
+                   .pivot(index=['date_char', 'date'],values='value', columns=['name']))
+
 
 # %%
 
