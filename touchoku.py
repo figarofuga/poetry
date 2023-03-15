@@ -44,8 +44,15 @@ hosp_shift = (pd.read_csv("hosp_shift.csv", parse_dates=['date'])
 form_answer_mod = (pl.DataFrame(form_answer)
                    .rename({'0': 'input_time', '1': 'name', '2': 'date', '3': 'date_type', '4': 'value'})
                    .select(['name', 'date', 'date_type', 'value'])
-                   .with_columns([pl.col('date').str.extract('(.*)(\\()', 1).str.strip().str.strptime(pl.Date,fmt='%Y/%m/%d ').alias("date_char")])
-                   .pivot(index=['date_char', 'date'],values='value', columns=['name']))
+                   .rename({"date": "date_char"})
+                   .with_columns([pl.col('date_char').str.extract('(.*)(\\()', 1).str.strip().str.strptime(pl.Date,fmt='%Y/%m/%d ').alias("date")])
+                   .pivot(index=['date_char', 'date'],values='value', columns=['name'])
+                   .filter(pl.col("date").is_between(start, stop))
+                   .to_pandas()
+                   .assign(
+        is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
+        is_weekend = lambda dat:dat['date'].dt.day_name().isin(['Saturday', 'Sunday']).astype(int))
+          .assign(is_holiday = lambda dat: np.where(dat['is_specialholiday'] + dat['is_weekend'] == 0, 0, 1)))
 
 
 # %%
