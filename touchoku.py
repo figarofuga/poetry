@@ -54,27 +54,3 @@ form_answer_mod = (pl.DataFrame(form_answer)
         is_weekend = lambda dat:dat['date'].dt.day_name().isin(['Saturday', 'Sunday']).astype(int))
           .assign(is_holiday = lambda dat: np.where(dat['is_specialholiday'] + dat['is_weekend'] == 0, 0, 1)))
 
-
-# %%
-# define duration
-
-ranged_df = (df_an.filter(
-    pl.col("date").is_between(start,stop),
-))
-
-df_all_null = ranged_df[:, [(s.null_count() == ranged_df.height) for s in ranged_df]]
-
-df_any_null = ranged_df[:, [s.null_count() > 0 for s in ranged_df]]
-
-df_full = ranged_df[:, [s.null_count() == 0 for s in ranged_df]]
-
-df_any_val = ranged_df[:, [not s.null_count() == ranged_df.height for s in ranged_df]]
-# %%
-
-def get_tuple(colname): 
-        mini_dat = (df_any_val.select(["row_num", colname]).filter(pl.col(colname) == -1.0))
-        row_list = [(colname, mini_dat[i, "row_num"]) for i in range(len(mini_dat))]
-        return row_list
-        
-
-# %% 
