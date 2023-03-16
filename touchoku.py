@@ -56,20 +56,6 @@ form_answer_mod = (pl.DataFrame(form_answer)
 
 
 # %%
-
-df_an = (dfl.rename({'2022/04/01 (金)\n平日夜間': 'date',
-                '平日夜間': 'type_date'})
-       .with_columns(
-               [pl.col(pl.Float32).map(np.floor).keep_name(),
-               pl.col("date").str.extract("(.*)(\\()", 1).str.strip().alias("date_char")])
-       .with_columns([ 
-               pl.col("date_char").str.strptime(pl.Date, fmt='%Y/%m/%d ').alias("date"), 
-               pl.when(pl.col("type_date") == "平日夜間").then("weekday").when(pl.col("type_date") == "休日午前").then("weekend_am").otherwise("weekend_night").alias("type_date"), 
-               pl.when(pl.col("type_date") == "休日午後").then(pl.col("date_char")+"_pm").when(pl.col("type_date") == "休日午前").then(pl.col("date_char")+"_am").otherwise(pl.col("date_char")).str.strip().alias("date_list")
-               ])
-               .with_row_count(name="row_num"))
-         
-# %%
 # define duration
 
 ranged_df = (df_an.filter(
