@@ -12,6 +12,29 @@ import jpholiday
 start = datetime(2022, 5, 1)
 stop = start + relativedelta(months=1)
 
+#########
+
+import jholiday
+import polars as pl
+
+# create a sample DataFrame with a column of dates
+df = pl.DataFrame({
+  'date': ['2022-01-01', '2022-01-02', '2022-01-03', '2023-01-01', '2023-01-02', '2023-01-03']
+})
+
+# convert the date column to datetime64
+df['date'] = df['date'].str.to_date(format='%Y-%m-%d')
+
+# define a function to check if a date is a holiday in Japan
+def is_holiday(date):
+  return 1 if jholiday.holiday_name(date) else 0
+
+# create a new column indicating whether each date is a holiday or not in Japan
+df['is_holiday'] = df['date'].apply(is_holiday, dtype=pl.UInt8)
+
+print(df)
+
+#########
 
 # %%
 # tmp_df = (pd.DataFrame(pd.date_range(start="2023-02-01", end="2024-03-31"), columns=["date"])
