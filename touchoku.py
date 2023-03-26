@@ -9,6 +9,7 @@ import pprint
 import jpholiday
 # %%
 # define values 
+year_start = datetime(2022, 4, 1)
 start = datetime(2022, 5, 1)
 stop = start + relativedelta(months=1)
 
@@ -56,6 +57,28 @@ request_duplicate = request_shift.filter(pl.col("date").is_duplicated())
 request_unique = request_shift.filter(pl.col("date").is_unique())
 
 # .pivot(index=['date_char', 'date'],values='value', columns=['name'])
+
+# %% 
+# we made record shift
+
+
+pasthistory = (pl.DataFrame(record_shift).rename({'Unnamed: 0': 'year', 'Unnamed: 1': 'month'})
+               .with_column(
+    (pl.col('year').cast(pl.Utf8) + '-' + pl.col('month').cast(pl.Utf8) + '-1').alias('date'))
+               .with_column(
+    pl.col('date').str.strip().str.strptime(pl.Date, fmt='%Y-%m-%d')
+               )
+               .with_column(
+    (pl.col('date')-pl.duration(days=1))
+               )
+               .filter(pl.col('date').is_between(year_start, stop))
+               .fill_null(0)
+               .groupby('シフト種類')
+               .agg(
+    [pl.sum(pl.col('河瀬')).alias('河瀬')]
+               )
+               )
+               
 
 
 # %%
