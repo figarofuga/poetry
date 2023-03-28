@@ -78,6 +78,13 @@ request_unique = request_shift.filter(pl.col("date").is_unique())
 # %% 
 # we made record shift
 
+# Define a function to filter numeric columns
+#def is_numeric(col: pl.Expr) -> bool:
+#    return col.dtype in [pl.Float64, pl.Float32, pl.Int64, pl.Int32]
+
+# Group by 'sex' and sum across all numeric columns
+#numeric_columns = [col for col in pbc.columns if is_numeric(pbc[col])]
+#result = pbc.groupby("sex").agg([pl.col(col).sum().alias(col) for col in numeric_columns])
 
 pasthistory = (pl.DataFrame(record_shift).rename({'Unnamed: 0': 'year', 'Unnamed: 1': 'month'})
                .with_column(
