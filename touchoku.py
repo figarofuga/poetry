@@ -8,6 +8,23 @@ import itertools
 import pprint
 import jpholiday
 # %%
+# usueful functions
+
+# date_df = (pd.DataFrame(pd.date_range(start="2023-04-01", end="2024-03-31"), columns=["date"])
+#            .assign(is_specialholiday = lambda dat:dat['date'].map(jpholiday.is_holiday).astype(int), 
+#                       is_weekend = lambda dat:dat['date'].dt.day_name().isin(['Saturday', 'Sunday']).astype(int))
+#                       .assign(is_holiday = lambda dat: np.where(dat['is_specialholiday'] + dat['is_weekend'] == 0, 0, 1))
+#                       .filter(['date', 'is_holiday'])
+#                       .assign(
+#     workday = lambda dat: np.where(dat['is_holiday'] == 0, 1, 0), 
+#     holiday_am = lambda dat: np.where(dat['is_holiday'] == 1, 1, 0),    
+#     holiday_pm = lambda dat: np.where(dat['is_holiday'] == 1, 1, 0))
+#     .melt(id_vars=['date', 'is_holiday'], var_name='work_name', value_vars=['workday', 'holiday_am', 'holiday_pm'])
+#     .query('value == 1')
+# )
+
+
+# %%
 # define values 
 year_start = datetime(2022, 4, 1)
 start = datetime(2022, 5, 1)
