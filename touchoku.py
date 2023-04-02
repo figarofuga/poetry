@@ -23,6 +23,21 @@ import jpholiday
 #     .query('value == 1')
 # )
 
+# import gspread
+# from oauth2client.service_account import ServiceAccountCredentials
+# import pandas as pd
+
+# scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+# creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+# client = gspread.authorize(creds)
+
+# sheet = client.open('your_google_spreadsheet_name').sheet1
+
+# data = sheet.get_all_values()
+# headers = data.pop(0)
+
+# df = pd.DataFrame(data, columns=headers)
+
 
 # %%
 # define values 
